@@ -141,6 +141,7 @@
       background: var(--card);
       box-shadow: var(--shadow);
       font-size: 0.85rem;
+      color: var(--text); /* ← ВОТ ЭТО */
     }
 
     .card {
@@ -215,6 +216,109 @@
       from { transform: translateY(30px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
+
+    .mistakes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.mistakes.collapsed ul,
+.mistakes.collapsed #clearMistakes {
+  display: none;
+}
+
+/* ===== Right controls ===== */
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.right-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* ===== Errors mode button ===== */
+.error-btn {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--card);
+  color: var(--text);
+}
+
+/* ===== Theme button ===== */
+.theme-btn {
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #f5b7c7 50%, #c9a7f5 50%);
+  border: 1px solid rgba(255,255,255,0.4);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.theme-btn:hover {
+  transform: scale(1.05);
+}
+
+/* ===== Show / Hide (Mistakes) ===== */
+#toggleMistakes {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: #e7a1b0;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+#toggleMistakes:hover {
+  opacity: 0.85;
+}
+
+/* ===== Errors background ===== */
+body.errors {
+  transition: background 0.8s ease;
+}
+
+body.errors:not(.dark) {
+  background: linear-gradient(135deg, #ffe6ef, #f7d6e6);
+}
+
+body.errors.dark {
+  background: linear-gradient(135deg, #3b0f23, #5a1a34);
+}
+
+/* ===== Active Errors Mode button ===== */
+.error-btn.active {
+  background: linear-gradient(135deg, #f5b7c7, #e3a1b8);
+  color: #3b0f23;
+  box-shadow:
+    0 0 12px rgba(245, 183, 199, 0.8),
+    0 0 24px rgba(245, 183, 199, 0.5);
+  transition: all 0.4s ease;
+}
+
+/* В тёмной теме */
+body.dark .error-btn.active {
+  background: linear-gradient(135deg, #f3b6c6, #c98aa2);
+  color: #3b0f23;
+  box-shadow:
+    0 0 14px rgba(243, 182, 198, 0.9),
+    0 0 28px rgba(243, 182, 198, 0.6);
+}
+
   </style>
 </head>
 
@@ -234,9 +338,13 @@
   <header>
     <h1>Victorka Secretarka</h1>
     <div class="controls">
-      <div class="pill" id="score">Score: 0</div>
-      <button class="pill" id="themeToggle">🩷 / 💜</button>
-    </div>
+  <div class="pill" id="score">Score: 0</div>
+
+  <div class="right-controls">
+    <button class="pill error-btn" id="modeToggle">Errors mode</button>
+    <button class="theme-btn" id="themeToggle"></button>
+  </div>
+</div>
   </header>
 
   <div class="card">
@@ -251,11 +359,14 @@
     <div class="translation" id="translation"></div>
   </div>
 
-  <div class="mistakes">
+  <div class="mistakes" id="mistakesBox">
+  <div class="mistakes-header">
     <h3>Mistakes</h3>
-    <ul id="mistakeList"></ul>
-    <button class="btn secondary" id="clearMistakes">Clear</button>
+    <button class="pill" id="toggleMistakes">Hide</button>
   </div>
+
+  <ul id="mistakeList"></ul>
+  <button class="btn secondary" id="clearMistakes">Clear</button>
 </div>
 
 <script>
@@ -675,6 +786,9 @@ function shuffle(array) {
 shuffle(data);
 
 let i = 0, score = 0;
+let isErrorMode = false;
+let currentSet = data;
+
 
 let mistakes = JSON.parse(localStorage.getItem("mistakes")) || [];
 const mistakeList = document.getElementById("mistakeList");
@@ -696,7 +810,12 @@ const translation = document.getElementById("translation");
 const scoreEl = document.getElementById("score");
 
 function load() {
-  const item = data[i % data.length];
+  if (!currentSet.length) {
+    phrase.textContent = "No mistakes yet 💅";
+    return;
+  }
+
+  const item = currentSet[i % currentSet.length];
   phrase.textContent = "➜ " + item.tail;
   answer.value = "";
   feedback.textContent = "";
@@ -704,7 +823,7 @@ function load() {
 }
 
 document.getElementById("checkBtn").onclick = () => {
-  const item = data[i % data.length];
+  const item = currentSet[i % currentSet.length];
   if (answer.value.trim().toLowerCase() === item.verb) {
     score++;
     feedback.textContent = "Correct ✓";
@@ -746,9 +865,38 @@ document.getElementById("clearMistakes").onclick = () => {
   localStorage.removeItem("mistakes");
   renderMistakes();
 };
-load();
+const mistakesBox = document.getElementById("mistakesBox");
+const toggleMistakes = document.getElementById("toggleMistakes");
+
+toggleMistakes.onclick = () => {
+  mistakesBox.classList.toggle("collapsed");
+  toggleMistakes.textContent =
+    mistakesBox.classList.contains("collapsed") ? "Show" : "Hide";
+};
+
+document.getElementById("modeToggle").onclick = function () {
+  isErrorMode = !isErrorMode;
+  i = 0;
+
+   document.body.classList.toggle("errors", isErrorMode); // ← ВОТ СЮДА
+   this.classList.toggle("active", isErrorMode);
+
+  if (isErrorMode) {
+    currentSet = mistakes.map(m => ({
+      verb: m.correct,
+      tail: m.phrasal.replace(m.correct + " ", ""),
+      tr: m.tr
+    }));
+    this.textContent = "Normal mode";
+  } else {
+    currentSet = data;
+    shuffle(currentSet);
+    this.textContent = "Errors mode";
+  }
+
+  load();
+};
 </script>
 
 </body>
 </html>
-
