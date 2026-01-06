@@ -375,7 +375,26 @@ body.dark .error-btn.active {
   letter-spacing: 2px;
   text-transform: uppercase;
   transition: 0.3s;
+  color: var(--text);
 }
+
+input {
+  color: var(--text);
+  background: var(--card);
+}
+
+input::placeholder {
+  color: rgba(0,0,0,0.5);
+}
+
+body.dark input::placeholder {
+  color: rgba(255,255,255,0.6);
+}
+
+.phrase {
+  color: var(--text);
+}
+
 
 .ghost-btn:hover {
   background: var(--accent);
@@ -575,8 +594,9 @@ body.errors::after {
 }
 
 /* ===== Glass morphism card ===== */
+/* ===== Glass morphism card ===== */
 .card {
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.45);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
 
@@ -587,11 +607,17 @@ body.errors::after {
     0 20px 40px rgba(231, 161, 176, 0.25),
     inset 0 1px 1px rgba(255, 255, 255, 0.6);
 
-  transition:
-    background 0.5s ease,
-    box-shadow 0.5s ease,
-    transform 0.4s ease;
+  transition: background 0.5s ease, box-shadow 0.5s ease;
 }
+
+body.dark .card {
+  background: rgba(40, 18, 28, 0.6);
+  border: 1px solid rgba(245, 183, 199, 0.25);
+  box-shadow:
+    0 25px 60px rgba(245, 183, 199, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.08);
+}
+
 
 .card:hover {
   transform: translateY(-4px);
@@ -1261,4 +1287,3 @@ toggleMistakes.onclick = () => {
 
 </body>
 </html>
-
