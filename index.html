@@ -40,7 +40,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      transition: 0.6s ease;
     }
 
     button {
@@ -79,36 +78,34 @@
     }
 
     .intro-sub {
-      font-style: italic;
-      opacity: 0.75;
-      margin-bottom: 36px;
-    }
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.7rem;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+  margin-bottom: 36px;
+}
 
     .intro-start {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      position: relative;
-      padding-bottom: 6px;
-      color: var(--text); /* ← ВОТ ЭТО */
-    }
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  padding: 14px 42px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f5b7c7, #e7a1b0);
+  color: #fff;
+  box-shadow:
+    0 0 20px rgba(231,161,176,0.6),
+    0 10px 30px rgba(0,0,0,0.15);
+  transition: all 0.4s ease;
+}
 
-    .intro-start::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      bottom: 0;
-      width: 0;
-      height: 1px;
-      background: var(--accent);
-      transition: 0.4s ease;
-      transform: translateX(-50%);
-    }
-
-    .intro-start:hover::after {
-      width: 100%;
-    }
+.intro-start:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow:
+    0 0 30px rgba(231,161,176,0.9),
+    0 14px 40px rgba(0,0,0,0.2);
+}
 
     /* APP */
     .app {
@@ -183,7 +180,7 @@
     }
 
     .btn.skip {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Inter', sans-serif;
       letter-spacing: 2px;
       text-transform: uppercase;
       background: transparent;
@@ -245,7 +242,8 @@
 
 /* ===== Errors mode button ===== */
 .error-btn {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
   font-size: 0.7rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -311,6 +309,27 @@ body.errors.dark {
   transition: all 0.4s ease;
 }
 
+/* ===== Errors mode glow ===== */
+.error-btn.active {
+  animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 10px rgba(245,183,199,0.6),
+                0 0 20px rgba(245,183,199,0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(245,183,199,1),
+                0 0 40px rgba(245,183,199,0.7);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(245,183,199,0.6),
+                0 0 20px rgba(245,183,199,0.4);
+  }
+}
+
+
 /* В тёмной теме */
 body.dark .error-btn.active {
   background: linear-gradient(135deg, #f3b6c6, #c98aa2);
@@ -331,6 +350,264 @@ body.dark .error-btn.active {
   animation: fadeIn 0.8s ease;
 }
 
+/* active Errors mode button */
+.error-btn.active {
+  background: linear-gradient(135deg, #f5b7c7, #e3a1b8);
+  color: #3b0f23;
+  box-shadow:
+    0 0 12px rgba(245,183,199,0.8),
+    0 0 24px rgba(245,183,199,0.5);
+}
+
+.streak {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-top: 6px;
+  font-family: 'Playfair Display', serif;
+}
+
+.ghost-btn {
+  background: transparent;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 10px;
+  margin-top: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: 0.3s;
+}
+
+.ghost-btn:hover {
+  background: var(--accent);
+  color: white;
+}
+
+.card.correct {
+  box-shadow: 0 0 30px rgba(245,183,199,0.8);
+  animation: glow 0.6s ease;
+}
+
+.card.wrong {
+  animation: shake 0.4s ease;
+}
+
+@keyframes glow {
+  from { transform: scale(0.97); }
+  to { transform: scale(1); }
+}
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+/* ===== Header layout ===== */
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Left group: Score + Streak */
+.left-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Pills refinement */
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Streak softer look */
+.streak {
+  opacity: 0.85;
+  font-size: 0.8rem;
+}
+
+.left-controls .pill {
+  background: var(--card);
+  color: var(--text);
+  backdrop-filter: blur(6px);
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+body.dark .score-streak {
+  box-shadow: 0 0 20px rgba(243,182,198,0.15);
+}
+
+/* Score + Streak unified */
+.score-streak {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  color: var(--accent);
+}
+
+.score-streak .divider {
+  opacity: 0.4;
+}
+
+.score-streak span {
+  line-height: 1;
+}
+
+.controls,
+.left-controls,
+.right-controls {
+  align-items: center;
+}
+
+.pill,
+.theme-btn {
+  height: 42px;
+}
+
+.action-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.action-row .ghost-btn {
+  flex: 1;
+  text-align: center;
+}
+
+.theme-btn.rotating {
+  animation: spin 0.6s ease;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  z-index: -1;
+  transition: opacity 0.8s ease;
+  opacity: 0;
+}
+
+body.errors::before {
+  opacity: 1;
+}
+
+body:not(.dark).errors::before {
+  background: linear-gradient(135deg, #ffe6ef, #f7d6e6);
+}
+
+body.dark.errors::before {
+  background: linear-gradient(135deg, #3b0f23, #5a1a34);
+}
+
+button.active {
+  background: linear-gradient(135deg, #ff5fa2, #b36bff);
+  color: white;
+  box-shadow: 0 0 20px rgba(255, 95, 162, 0.6);
+}
+
+body.errors {
+  background: linear-gradient(180deg, #2b0f1d, #4a1630);
+  transition: background 0.6s ease;
+}
+
+.no-mistakes {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.4rem;
+  text-align: center;
+  margin: 16px 0;
+  color: var(--accent);
+  opacity: 0.9;
+}
+
+.ghost-btn,
+#toggleMistakes,
+.btn.secondary {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+}
+
+/* ===== Score micro animation ===== */
+@keyframes scorePop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+.score-pop {
+  animation: scorePop 0.5s ease;
+  text-shadow: 0 0 12px rgba(231,161,176,0.8);
+}
+
+/* ===== Runway background ===== */
+body.errors::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    circle at top,
+    rgba(245,183,199,0.35),
+    transparent 60%
+  );
+  pointer-events: none;
+  animation: runwayFade 1s ease;
+}
+
+@keyframes runwayFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ===== Glass morphism card ===== */
+.card {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+
+  box-shadow:
+    0 20px 40px rgba(231, 161, 176, 0.25),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+
+  transition:
+    background 0.5s ease,
+    box-shadow 0.5s ease,
+    transform 0.4s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 30px 60px rgba(231, 161, 176, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.7);
+}
+
+body.errors .card {
+  background: rgba(40, 18, 28, 0.55);
+  border: 1px solid rgba(245, 183, 199, 0.35);
+  box-shadow:
+    0 25px 60px rgba(245, 183, 199, 0.45);
+}
+
+
   </style>
 </head>
 
@@ -350,13 +627,20 @@ body.dark .error-btn.active {
   <header>
     <h1>Victorka Secretarka</h1>
     <div class="controls">
-  <div class="pill" id="score">Score: 0</div>
+  <div class="left-controls">
+    <div class="pill score-streak">
+  <span id="score">Score: 0</span>
+  <span class="divider">•</span>
+  <span class="streak-text">🔥 <span id="streak">0</span> days</span>
+</div>
+  </div>
 
   <div class="right-controls">
     <button class="pill error-btn" id="modeToggle">Errors mode</button>
     <button class="theme-btn" id="themeToggle"></button>
   </div>
 </div>
+
   </header>
 
   <div class="card">
@@ -364,7 +648,10 @@ body.dark .error-btn.active {
     <input id="answer" placeholder="Type the verb…" />
 
     <button class="btn" id="checkBtn">Check</button>
-    <button class="btn secondary" id="showTranslation">Show translation</button>
+<div class="action-row">
+  <button id="toggleTranslation" class="ghost-btn">Show translation</button>
+  <button id="revealVerb" class="ghost-btn">Reveal verb</button>
+</div>
     <button class="btn skip" id="skipBtn">Skip</button>
 
     <div class="feedback" id="feedback"></div>
@@ -382,8 +669,24 @@ body.dark .error-btn.active {
 </div>
 
 <script>
-/* INTRO — ALWAYS SHOW ON RELOAD */
-localStorage.removeItem("mistakes");
+
+  function updateStreak() {
+  const today = new Date().toDateString();
+  const last = localStorage.getItem("lastVisit");
+  let streak = Number(localStorage.getItem("streak") || 0);
+
+  if (last !== today) {
+    if (last === new Date(Date.now() - 86400000).toDateString()) {
+      streak++;
+    } else {
+      streak = 1;
+    }
+    localStorage.setItem("streak", streak);
+    localStorage.setItem("lastVisit", today);
+  }
+
+  document.getElementById("streak").textContent = streak;
+}
 
 const intro = document.getElementById("intro");
 const app = document.getElementById("app");
@@ -391,18 +694,29 @@ const app = document.getElementById("app");
 document.getElementById("startIntro").onclick = () => {
   intro.style.display = "none";
   app.style.display = "block";
+  updateStreak();   // 🔥 ВОТ ТУТ
   load();
 };
+
 
 /* THEME */
 if (localStorage.getItem("theme") === "dark") {
   document.body.classList.add("dark");
 }
-document.getElementById("themeToggle").onclick = () => {
+const themeBtn = document.getElementById("themeToggle");
+
+themeBtn.onclick = () => {
+  themeBtn.classList.add("rotating");
+
   document.body.classList.toggle("dark");
-  localStorage.setItem("theme",
+  localStorage.setItem(
+    "theme",
     document.body.classList.contains("dark") ? "dark" : "light"
   );
+
+  setTimeout(() => {
+    themeBtn.classList.remove("rotating");
+  }, 600);
 };
 
 /* TRAINING */
@@ -801,7 +1115,7 @@ shuffle(data);
 let i = 0, score = 0;
 let isErrorMode = false;
 let currentSet = data;
-
+let isTranslationShown = false;
 
 let mistakes = JSON.parse(localStorage.getItem("mistakes")) || [];
 const mistakeList = document.getElementById("mistakeList");
@@ -821,30 +1135,69 @@ const answer = document.getElementById("answer");
 const feedback = document.getElementById("feedback");
 const translation = document.getElementById("translation");
 const scoreEl = document.getElementById("score");
+const card = document.querySelector(".card");
 
 function load() {
-  if (!currentSet.length) {
-    phrase.textContent = "No mistakes yet";
-    phrase.classList.add("no-mistakes");
-    return;
-  }
-
-  phrase.classList.remove("no-mistakes");
-
   const item = currentSet[i % currentSet.length];
-  phrase.textContent = "➜ " + item.tail;
+
+  phrase.textContent = "___ " + item.tail;
   answer.value = "";
   feedback.textContent = "";
+  feedback.className = "";
   translation.textContent = "";
+
+  answer.focus();
+
+  isTranslationShown = false;
+document.getElementById("toggleTranslation").textContent = "Show translation";
 }
+document.getElementById("modeToggle").onclick = function () {
+  if (!mistakes.length && !isErrorMode) {
+  feedback.textContent = "No mistakes yet 💖";
+  feedback.className = "no-mistakes";
+  return;
+}
+
+  isErrorMode = !isErrorMode;
+  i = 0;
+
+  this.classList.toggle("active", isErrorMode);
+  document.body.classList.toggle("errors", isErrorMode);
+
+  if (isErrorMode) {
+    currentSet = mistakes.map(m => ({
+      verb: m.correct,
+      tail: m.phrasal.replace(m.correct + " ", ""),
+      tr: m.tr
+    }));
+    this.textContent = "Normal mode";
+  } else {
+    currentSet = data;
+    shuffle(currentSet);
+    this.textContent = "Errors mode";
+  }
+
+  load();
+};
+
 
 document.getElementById("checkBtn").onclick = () => {
   const item = currentSet[i % currentSet.length];
   if (answer.value.trim().toLowerCase() === item.verb) {
     score++;
-    feedback.textContent = "Correct ✓";
+feedback.textContent = "Correct ✓";
+
+scoreEl.classList.remove("score-pop");
+void scoreEl.offsetWidth; // перезапуск анимации
+scoreEl.classList.add("score-pop");
+
+    card.classList.add("correct");
+setTimeout(() => card.classList.remove("correct"), 600);
+
   } else {
   feedback.textContent = "Wrong ✗ Correct: " + item.verb;
+  card.classList.add("wrong");
+setTimeout(() => card.classList.remove("wrong"), 600);
 
   const fullPhrasal = item.verb + " " + item.tail;
 
@@ -871,9 +1224,22 @@ document.getElementById("skipBtn").onclick = () => {
   setTimeout(load, 400);
 };
 
-document.getElementById("showTranslation").onclick = () => {
-  translation.textContent = data[i % data.length].tr;
+document.getElementById("toggleTranslation").onclick = function () {
+  if (!isTranslationShown) {
+    translation.textContent = currentSet[i % currentSet.length].tr;
+    this.textContent = "Hide translation";
+  } else {
+    translation.textContent = "";
+    this.textContent = "Show translation";
+  }
+  isTranslationShown = !isTranslationShown;
 };
+
+document.getElementById("revealVerb").onclick = () => {
+  const item = currentSet[i % currentSet.length];
+  feedback.textContent = "Verb: " + item.verb;
+};
+
 renderMistakes();
 
 document.getElementById("clearMistakes").onclick = () => {
@@ -890,28 +1256,7 @@ toggleMistakes.onclick = () => {
     mistakesBox.classList.contains("collapsed") ? "Show" : "Hide";
 };
 
-document.getElementById("modeToggle").onclick = function () {
-  isErrorMode = !isErrorMode;
-  i = 0;
 
-   document.body.classList.toggle("errors", isErrorMode); // ← ВОТ СЮДА
-   this.classList.toggle("active", isErrorMode);
-
-  if (isErrorMode) {
-    currentSet = mistakes.map(m => ({
-      verb: m.correct,
-      tail: m.phrasal.replace(m.correct + " ", ""),
-      tr: m.tr
-    }));
-    this.textContent = "Normal mode";
-  } else {
-    currentSet = data;
-    shuffle(currentSet);
-    this.textContent = "Errors mode";
-  }
-
-  load();
-};
 </script>
 
 </body>
