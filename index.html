@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -317,6 +318,17 @@ body.dark .error-btn.active {
   box-shadow:
     0 0 14px rgba(243, 182, 198, 0.9),
     0 0 28px rgba(243, 182, 198, 0.6);
+}
+
+.no-mistakes {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.8rem;
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+}
+
+.no-mistakes {
+  animation: fadeIn 0.8s ease;
 }
 
   </style>
@@ -812,9 +824,12 @@ const scoreEl = document.getElementById("score");
 
 function load() {
   if (!currentSet.length) {
-    phrase.textContent = "No mistakes yet 💅";
+    phrase.textContent = "No mistakes yet";
+    phrase.classList.add("no-mistakes");
     return;
   }
+
+  phrase.classList.remove("no-mistakes");
 
   const item = currentSet[i % currentSet.length];
   phrase.textContent = "➜ " + item.tail;
