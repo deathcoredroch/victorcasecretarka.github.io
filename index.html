@@ -32,15 +32,18 @@
     * { box-sizing: border-box; }
 
     body {
-      margin: 0;
-      min-height: 100vh;
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.8s ease;
+}
+
+
 
     button {
       border: none;
@@ -512,19 +515,6 @@ body.dark .score-streak {
   to   { transform: rotate(360deg); }
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: transparent;
-  z-index: -1;
-  transition: opacity 0.8s ease;
-  opacity: 0;
-}
-
-body.errors::before {
-  opacity: 1;
-}
 
 body:not(.dark).errors::before {
   background: linear-gradient(135deg, #ffe6ef, #f7d6e6);
@@ -538,11 +528,6 @@ button.active {
   background: linear-gradient(135deg, #ff5fa2, #b36bff);
   color: white;
   box-shadow: 0 0 20px rgba(255, 95, 162, 0.6);
-}
-
-body.errors {
-  background: linear-gradient(180deg, #2b0f1d, #4a1630);
-  transition: background 0.6s ease;
 }
 
 .no-mistakes {
@@ -575,18 +560,6 @@ body.errors {
 }
 
 /* ===== Runway background ===== */
-body.errors::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(
-    circle at top,
-    rgba(245,183,199,0.35),
-    transparent 60%
-  );
-  pointer-events: none;
-  animation: runwayFade 1s ease;
-}
 
 @keyframes runwayFade {
   from { opacity: 0; }
@@ -601,21 +574,16 @@ body.errors::after {
   -webkit-backdrop-filter: blur(18px);
 
   border-radius: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  border: none;
+  box-shadow:
+    0 25px 60px rgba(0,0,0,0.45),
+    inset 0 1px 2px rgba(255,255,255,0.12);
 
   box-shadow:
     0 20px 40px rgba(231, 161, 176, 0.25),
     inset 0 1px 1px rgba(255, 255, 255, 0.6);
 
   transition: background 0.5s ease, box-shadow 0.5s ease;
-}
-
-body.dark .card {
-  background: rgba(40, 18, 28, 0.6);
-  border: 1px solid rgba(245, 183, 199, 0.25);
-  box-shadow:
-    0 25px 60px rgba(245, 183, 199, 0.35),
-    inset 0 1px 1px rgba(255, 255, 255, 0.08);
 }
 
 
@@ -626,11 +594,71 @@ body.dark .card {
     inset 0 1px 1px rgba(255, 255, 255, 0.7);
 }
 
-body.errors .card {
-  background: rgba(40, 18, 28, 0.55);
-  border: 1px solid rgba(245, 183, 199, 0.35);
+
+:root {
+  --bg:
+    radial-gradient(circle at 20% 20%, #ffb3d1, transparent 40%),
+    radial-gradient(circle at 80% 30%, #c9a7f5, transparent 40%),
+    linear-gradient(135deg, #fde8ef, #f6d6e3);
+}
+
+body.dark {
+  --bg:
+    radial-gradient(circle at 20% 20%, rgba(255,120,170,0.25), transparent 45%),
+    radial-gradient(circle at 80% 30%, rgba(180,130,255,0.25), transparent 45%),
+    linear-gradient(135deg, #2b0f1d, #4a1630);
+}
+
+body.errors::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+body.errors:not(.dark)::before {
+  background: linear-gradient(135deg, #ffe6ef, #f7d6e6);
+  opacity: 1;
+}
+
+body.dark.errors::before {
+  background: linear-gradient(135deg, #3b0f23, #5a1a34);
+  opacity: 1;
+}
+
+body.dark .card {
+  background: rgba(90, 25, 55, 0.45);
   box-shadow:
-    0 25px 60px rgba(245, 183, 199, 0.45);
+    0 20px 60px rgba(0,0,0,0.5),
+    inset 0 1px 1px rgba(255,255,255,0.15);
+}
+
+body.errors:not(.dark) .card {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow:
+    0 20px 40px rgba(231,161,176,0.25),
+    inset 0 1px 1px rgba(255,255,255,0.7);
+}
+
+body.dark.errors .card {
+  background: rgba(90, 25, 55, 0.45);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.55),
+    inset 0 1px 1px rgba(255,255,255,0.15);
+}
+
+.card {
+  transition:
+    background 0.6s ease,
+    box-shadow 0.6s ease,
+    backdrop-filter 0.6s ease;
 }
 
 
